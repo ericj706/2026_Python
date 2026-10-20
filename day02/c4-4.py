@@ -41,3 +41,25 @@ array = [
     for i in range( 0 , 21 , 2 ) 
     if i != 10 
     ]
+
+# p.263 .join( )
+# 방법1) """여러줄"""
+print("""안녕하세요1
+        안녕하세요2""")
+# 방법2) \n 제어문자
+print("안녕하세요1\n안녕하세요2")
+# 방법3)("문자열" "문자열")
+print( ("안녕하세요1\n" "안녕하세요2"))
+# 방법4) 사이문자열.join(리스트),  리스트 요소 사이마다 특정 문자열 삽입
+print("\n".join(["안녕하세요1", "안녕하세요2"]))
+print("-".join("유재석"))
+
+
+# 화긴문제
+
+output = [i for i in range(1,101) if f"{i:b}".count("0") == 1]
+
+for i in output:
+    print("{} : {}".format(i,"{:b}".format(i)))
+print("합계: ", sum(output))
+

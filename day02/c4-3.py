@@ -17,7 +17,7 @@ for i in range( 1 , 11 ) :
 for i in range( 10 , 0 , -1 ) :
     print( i )
 # 3] 1부터 10까지 홀수만 출력
-for i in range( 1 , 11 , 2 ) : 
+for i in range( 3 , 10 , 3 ) : 
     print( i )
 # 4] 구구단 : 단수 2부터9까지 , 곱수 1부터9까지
 for 단 in range( 2 , 10, 1 ) :
@@ -55,3 +55,35 @@ for i in range( 1, 11, 1 ) :
         continue    # 코드의흐름이 continue 만나면 가장 가까운 반복문으로 이동
     print( i )
 # 1 ~ 10        # 1~2 , 4~10
+
+# 확인문제
+
+key_list=["name","hp","mp","level"]
+value_list = ["기사",200,30,5]
+character={}
+for i in range(0,4):
+    character[key_list[i]] = value_list[i]
+print(character)
+
+
+limit = 10000
+i = 1
+sum_value = 0
+while sum_value < limit:
+    sum_value += i
+    i+=1
+
+print("{}를 더할때 {}을 넘으며 그때의 값은 {}입니다.".format(i-1,limit,sum_value))
+
+
+max_value = 0
+a = 0
+b = 0
+for i in range(1, 100):
+    j = 100 - i
+    if i*j > max_value:
+        a=i
+        b=j
+        max_value = a*b
+
+print("최대가 되는 경우: {}*{}={}".format(a,b,max_value))

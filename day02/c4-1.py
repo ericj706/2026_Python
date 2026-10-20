@@ -67,3 +67,11 @@ for char in "안녕":
 
 # p.211 전개연산자, 리스트명 앞에 *붙인다
 print(*list_a)
+
+
+# 확인 문제
+numbers = [1,2,3,4,5,6,7,8,9]
+output = [ [],[],[] ]
+for number in numbers:
+    output[(number-1)%3].append(number)
+print(output)

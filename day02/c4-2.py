@@ -31,3 +31,4 @@ print(dict_a.get('price'))  # None 반환
 for key in dict_a:
     print(dict_a.get(key)) # 방법1
     print(dict_a[key])     # 방법2
+
