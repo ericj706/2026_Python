@@ -1,0 +1,73 @@
+# 함수란? 코드의 집합
+    # 값 여러개 저장 = 리스트/딕셔너리/튜플
+# 매개변수? 함수를 호출할때는 괄호 내부에 여러가지를 넣는 변수
+# 리턴값? 함수를 호출해서 최종적으로 나오는 결과
+
+# def 함수명(매개변수명) :
+#   ㄴ>실행문
+
+# 값 재사용 = 변수, 코드 재사용 = 반복문(반복패턴 식 존재) / 함수(입/출력)
+# 회원가입 함수, 회원목록에서 중복 아이디 찾기
+
+# 1. 기본적인 함수
+def print_3_time():     # 함수 정의.만들기
+    print("안녕하세요")
+    print("안녕하세요")
+    print("안녕하세요")
+print_3_time() # 함수 사용/호출 vs 반복문은 식별자X
+
+# 2. 매개변수? 매개(중매-서로 다른곳에서 연결), 인수/인자값 -> 매개변수
+# 파이썬은 { }가 아닌 탭(들여쓰기) 이용하여 구역 구분
+def print_n_times( value, n ):
+    for i in range( n ) : 
+        print( value )
+print_n_times( "안녕하세요" , 5 ) # 인수/인자값 란? 함수 호출할 때 매개변수에 전달하는 값 
+print_n_times( "안녕하세요" , 3 ) 
+print_n_times( "안녕하세요" )       # 매개변수는 약속 이고 어기면 실행 안됨.
+
+# p.278 가변 매개변수 , p,211전개연산자
+# 조건1: 가변매개변수가 가장 뒤로 정의한다. # 조건2: 1번만 사용
+# def 함수명( 매개변수 , 매개변수 , *가변매개변수 ) : 
+def print_n_times2( n , *values ) : 
+    for i in range(n) : # 3번반복                           # 2번
+        for value in values : # [안녕하세요,즐거운,파이썬]   #  [안녕하세요,즐거운]
+            print( value )
+        print()
+print_n_times2( 3 , "안녕하세요" , "즐거운" , "파이썬" ) # 인수4개 , 안녕하세요/즐거운/파이썬 * 3
+print_n_times2( 2 , "안녕하세요" , "즐거운"  )          #  인수3개 , 운안녕하세요/즐거 * 2
+
+# p.279 기본 매개변수, 매개변수에 기본삾 대입 형태, 인수/인자 값 생략 시 기본값
+def print_n_times3(value, n=2):
+    for i in range(n):
+        print(value)
+
+print_n_times3("안녕하세요")    # "안녕하세요""안녕하세요"
+print_n_times3("안녕하세요", 3) # "안녕하세요""안녕하세요""안녕하세요"
+
+# p.280
+# 기본 매개변수가 가변 매개변수보다 앞에 올때, 오류
+# 가변 매개변수가 기본 매개변수보다 앞에 올때, 기본 매개변수 인자값 없다
+# 해결방안 : 키워드 매개변수
+
+
+# p.287 함수활용 예제
+def sum_all(start, end):
+    ouput = 0
+    # 반복문 
+    for i in range(start, end+1):
+        ouput += i
+    return ouput
+print("0 to 100:", sum_all(0,100))
+print("0 to 1000:", sum_all(0,1000))
+print("50 to 100:", sum_all(50,100))
+print("500 to 1000:", sum_all(500,1000))
+
+# p.288 함수활용 예제
+def sum_all(start=0, end = 100, step=1):
+    output = 0
+    for i in range(start, end+1, step):
+        output += i
+    return output
+print("A.", sum_all(0,100,10))
+print("B.", sum_all(end=100))
+print("C.", sum_all(end=100, step=2))
