@@ -8,7 +8,7 @@ def factorial1(n) :
 factorial1(2)    # 2! -> 2*1 = 2
 factorial1(3)    # 3! -> 6
 
-# 2) 팩토리얼 재구ㅏ
+# 2) 팩토리얼 재귀
 def factorial2(n) :
     if n == 0:
         return 1
@@ -49,3 +49,24 @@ def fibonacci(n):
 print("fibonacci(10): ",fibonacci(10))
 print("fibonacci(30): ",fibonacci(30))
 print("fibonacci(50): ",fibonacci(50))
+
+# 확인문제
+최소사람수 = 2
+최대사람수 = 10
+전체사람수 = 100
+memo = {}
+def 문제(남은사람수, 최소사람수):
+    key = str([남은사람수,최소사람수])
+    #종료조건
+    if key in memo:
+        return memo[key]
+    if 남은사람수 <0:
+        return 0
+    if 남은사람수 ==0:
+        return 1
+    경우의수 = 0
+    for 테이블인원수 in range(최소사람수, 최대사람수+1):
+        경우의수 += 문제(남은사람수-테이블인원수, 테이블인원수)
+    memo[key]=경우의수
+    return 경우의수
+print(문제(전체사람수,최소사람수))

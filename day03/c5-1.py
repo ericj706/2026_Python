@@ -101,3 +101,15 @@ def sum_all(start=0, end = 100, step=1):
 print("A.", sum_all(0,100,10))
 print("B.", sum_all(end=100))
 print("C.", sum_all(end=100, step=2))
+
+# 확인문제
+def mul(*values):
+    output = 1
+    for i in values:
+        output *= i
+    return output
+print(mul(5, 7, 9, 10))
+
+def function( valueA=10, valueB=20,*values):
+    pass
+function(1,2,3,4,5)
