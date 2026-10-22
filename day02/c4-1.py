@@ -70,6 +70,19 @@ print(*list_a)
 
 
 # 확인 문제
+numbers = [273 , 103, 5, 32, 65, 9, 72, 800, 99]
+for num in numbers :
+    if num%2 == 0 :
+        print(num, "는 짝수입니다.")
+    else :
+        print(num, "는 홀수입니다.")
+        
+for num in numbers : 
+    length = len(str(num))
+    print(num,"는", length,"자릿수입니다.")
+
+
+
 numbers = [1,2,3,4,5,6,7,8,9]
 output = [ [],[],[] ]
 for number in numbers:
