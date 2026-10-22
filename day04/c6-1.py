@@ -37,3 +37,17 @@ else :
     print( "정수가 맞습니다.")
 finally : # 무조건 실행되는 코드
     print( "코드가 끝났습니다.")
+
+# 예6] finally 활용 예
+try:
+    file = open("info.txt","w")
+    # open(파일명, 옵션) 파일 불러오기 함수 # W옵션: 파일이 없으면 생성
+    예외.발생해라() # 일부러 예외 발생
+    # file.close()
+except :
+    print("예외 발생")
+finally :
+    file.close() # 무조건 파일 닫기
+print(file.closed) # False
+# finally 사용 : return 함수종료, break 반복문종료 + finally 조합
+
