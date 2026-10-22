@@ -76,11 +76,21 @@ for num in numbers :
         print(num, "는 짝수입니다.")
     else :
         print(num, "는 홀수입니다.")
-        
+
 for num in numbers : 
     length = len(str(num))
     print(num,"는", length,"자릿수입니다.")
 
+for num in numbers:
+    if num < 10:
+        length = 1
+    elif num < 100:
+        length = 2
+    elif num < 1000:
+        length = 3
+    else:
+        length = 4  # 현재는 10,000 미만까지만 처리
+    print(num, "는", length, "자릿수입니다.")
 
 
 numbers = [1,2,3,4,5,6,7,8,9]
