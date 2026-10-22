@@ -11,3 +11,15 @@ except IndexError as e :
     print( e )
 except Exception as e :
     print( e )
+
+# 
+a = 10
+def 함수( ) :
+    # global a  
+    # 단순 호출이면 global 생략가능,
+    # 전역변수 수정하면 global 필수
+    global a
+    a = a+1
+    print (a)
+    b = 20
+함수 ()
