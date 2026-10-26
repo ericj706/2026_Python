@@ -27,15 +27,15 @@ students = [
 class Student2 : 
     # def __init__(self , 멤버변수1 ) :
     #     self.멤버변수1 = 멤버변수1
-    def __init__(self , name , korean, math , engligh, science ):
+    def __init__(self , name , korean, math , english, science ):
         self.name = name
         self.korean = korean
         self.math = math
-        self.engligh = engligh
+        self.english = english
         self.science = science
     # def 메소드명( self , 매개변수1 ) :
     def get_sum( self ) :
-        return self.korean + self.math + self.engligh + self.science
+        return self.korean + self.math + self.english + self.science
     def get_average( self ) :
         return self.get_sum() / 4 
     def to_string( self ) : 
