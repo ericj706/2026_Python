@@ -26,7 +26,7 @@ students = [
 # 2. 생성자 / 메소드 
 class Student2 : 
     # def __init__(self , 멤버변수1 ) :
-    #     self.멤버변수1 = 멤버변수1;
+    #     self.멤버변수1 = 멤버변수1
     def __init__(self , name , korean, math , engligh, science ):
         self.name = name
         self.korean = korean
