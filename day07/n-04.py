@@ -8,8 +8,11 @@ print( np.Var(x) ) # 분산 : 평균으로부터 요소 값들이 떨어진 정�
 print( np.std(x) ) # 표준편차 : 분산에 양의 제곱근 사용하여 데이터 단위 맞춘 값
 
 # 2차원 배열 통계 함수
+# np.통계함수 (2차원배열, axis = 생략시 1차원평탄화,0열마다,1행마다)
 y = np.array( [1,2,3] , [4,5,6] )
 print( np.min(y) , np.max(y) )
 print( np.min(y , axis=0) , np.max(y , axis=1) )
 print( np.argmin(y) , np.argmax(y) )
+print( np.sum(y,axis=0) , np.mean(y,axis=0) , np.mean(y,axis=1) )
+print( np.var(x) , np.std(x) , np.sqrt(x) )
 
