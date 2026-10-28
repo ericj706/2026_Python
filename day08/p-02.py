@@ -30,7 +30,7 @@ df = df.drop_duplicates().reset_index(drop=True) # 인덱스 초기화/재정렬
 df.info()
 df['사번'] = df['사번'].astype(str)
 df.info()
-# 3. 공백 문자('' , '')는 결측(NaN) 만들기 , 
+# 3. 공백 문자('', ' ')는 결측(NaN) 만들기 , 
 # 문자열.strip() 앞뒤 여백/공백 제거 함수
 # 문자열.replace('기존문자','새로운문자') 문자열내 기본문자가 존재하면 새로운문자로 치환
 df['이름'] = df['이름'].str.strip()
