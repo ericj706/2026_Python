@@ -1,5 +1,5 @@
 import pandas as pd
-df = pd.read_csv("./Fish.csv") # 1) 자료 수집
+df = pd.read_csv("./day14/Fish.csv") # 1) 자료 수집
 X = df[ ['Length2','Height','Width'] ] # 2) 특성 선정/구성
 Y = df[ ['Weight'] ] # 2) 타깃(정답) 선정/구성
 # 3) 훈련 / 테스트 분리 , 8:2
@@ -33,8 +33,8 @@ pipe_model = Pipeline( [ ("poly", PolynomialFeatures(degree=2 , include_bias=Fal
                         ('regressor', LinearRegression() ) ] ) # 6
 # 9) 파이프라인으로 학습
 pipe_model.fit( X_train , Y_train )
-print('r2 : ', pipe_model.score(X_train_scaled , Y_train))
-print('r2 : ', pipe_model.score(X_test_scaled, Y_test))
+print('r2 : ', pipe_model.score(X_train , Y_train))
+print('r2 : ', pipe_model.score(X_test, Y_test))
 
 # 10) 최적(성능좋은/오차적은) 의 파라미터(매개변수/대입값) 찾기
 from sklearn.linear_model import Ridge
@@ -48,8 +48,8 @@ pipe_model = Pipeline( [
 ])
 # 2. 후보군 파라미터 만들기 , {'식별자_파라미터명' : [후보값,후보값]}
 param_grid = {
-    'poly_degree' : [2,3],
-    'ridge_alpha' : [0.001,0.01,0.1,1,10,100]  # 딕셔너리 형태
+    'poly__degree' : [2,3],
+    'ridge__alpha' : [0.001,0.01,0.1,1,10,100]  # 딕셔너리 형태
 }
 # 3. K-FOLD 교차 검증
 # KFold( n_splits=K개의 동일한 폴드로 분할, shuffle=True, random_state=42 )
@@ -73,3 +73,12 @@ print(grid.best_score_)  # 교차 검증에서 평균 점수 반환
 # 7. 최적모델로 평가
 print('r2 : ', best_model.score(X_train,Y_train))
 print('r2 : ', best_model.score(X_test,Y_test))
+
+# ===================
+# 11) 서빙(학습된 모델 재사용), 학습된 모델 저장하고 다른곳에서 호출
+# 연구/학습 : 코랩(고사양GPU)에서 학습 --> 실제 서버(Fast API)에서 호출
+import joblib
+# 1. 모델 저장
+# joblib.dump(best_model , '경로.pkl')
+joblib.dump(best_model , './day14/fish_model.pkl')
+# 2. 다른 파이썬 파일에서 저장된 모델 불러오기 s-05.py
