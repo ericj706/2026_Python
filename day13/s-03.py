@@ -82,7 +82,7 @@ for alpha in alpha_list :
     # 훈련데이터 점수와 테스트용 점수 격차 적은 alpha 찾기
     print(alpha , ": --훈련용 학습 데이터 vs 테스트용 학습 데이터 점수--")
     print( "Train R2 : ", model.score(X_train_scaled,Y_train) )
-    print( "Test T2 : ", model.score(X_test_scaled, Y_test) )
+    print( "Test R2 : ", model.score(X_test_scaled, Y_test) )
 
 from sklearn.linear_model import Lasso
 lasso = Lasso( alpha= 10 ) # 라쏘 모델 객체 생성 # alpah = 규제강도
