@@ -81,11 +81,10 @@ print( classification_report( Y_test , Y_pred , zero_division=0 ))
 # 4. 불러온 파이프라인의 predict() 및 predict_proba()에 직접 전달하여 예측 커팅 등급(cut)과 가장 높은 확신도(최대 확률 %)를 출력하세요.
 import joblib
 joblib.dump(best_model , './day15/diamond_pipeline.pkl')
-
 model = joblib.load('./day15/diamond_pipeline.pkl')
-# 2. 불러온 모델로 예측 테스트
+
 import pandas as pd
-diasample = pd.DataFrame( {'carat': 0.7, 'color':'E', 'clarity':'SI1', 'depth':61.5, 'table':55.0, 'price':3000, 'x':5.7, 'y':5.75, 'z':3.5} ) # 임의의 특성 넣어서 예측 무게 찾기
+diasample = pd.DataFrame( {'carat': [0.7], 'color':['E'], 'clarity':['SI1'], 'depth':[61.5], 'table':[55.0], 'price':[3000], 'x':[5.7], 'y':[5.75], 'z':[3.5]} )
 predict = model.predict(diasample)
 print('예측값/무게: ', predict)
-print(model.predict_proba(diasample[:3]))
+print(model.predict_proba(diasample))
