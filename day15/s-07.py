@@ -4,7 +4,7 @@ fish = pd.read_csv( "./day15/Fish.csv")
 X = fish.drop( columns=['Species'] )    # 어종 제외한 모든 열
 Y = fish['Species']                     # 어종 열 
 # 2) 분리 , ,stratify=Y 정답지에 학습용과테스트용 비율 유지(분류 모델 권장)
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import StratifiedKFold, train_test_split
 X_train,X_test,Y_train,Y_test = train_test_split(
     X,Y,test_size=0.2,random_state=42,stratify=Y
 )
@@ -35,7 +35,7 @@ from sklearn.metrics import accuracy_score,precision_score,recall_score,f1_score
 # 클래스내 개수들이 불균형 이면 점수가 왜곡 발생 
 print( accuracy_score( Y_test , Y_pred ) ) # 0.8125
 # 2) 정밀도 : 예측 한 것 중 실제 로 맞힌 비율 
-print( precision_score( Y_test , Y_pred , average="macro" ) )
+print( precision_score( Y_test , Y_pred , average="macro" ,zero_division=0 ) )
 # 3) 재현율 : 실제 정답인 것 중에 모델이 놓치지 않고 찾아낸 비율 
 print( recall_score( Y_test , Y_pred  , average="macro") )
 # 4) f1점수/표준 : 정밀도 와 재현율 간의 조화 조정하기 위한 조화평균 
@@ -48,5 +48,24 @@ from sklearn.metrics import ConfusionMatrixDisplay , classification_report
 ConfusionMatrixDisplay.from_predictions( Y_test , Y_pred )
 plt.show() 
 ## 리포트( 평가 지도 보고서 )
-print( classification_report( Y_test , Y_pred ) )
+print( classification_report( Y_test , Y_pred , zero_division=0) )
 
+# 파이프라인 구성
+from sklearn.pipeline import Pipeline
+pipe = Pipeline( [
+    ('caler', StandardScaler()),
+    ('model', LogisticRegression(max_iter=1000 , random_state=42))
+])
+# 하이퍼파라미터 후보군, 식별자__매개변수명 : [후보값, 후보값]
+param_grid = {'model__C' : [0.01,0.1,1.0,10.0,100.0]}
+# K폴드 이용한 교차 검증 분할기(다중분류 : StratifiedKFold)
+cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
+# 그리드 서치
+from sklearn.model_selection import GridSearchCV
+grid = GridSearchCV(pipe,param_grid,cv=cv,scoring="f1_macro",n_jobs=-1)
+grid.fit(X_train , Y_train)
+print( grid.best_params_ ) # 최적의 파라미터 
+print( grid.best_score_ ) # 최고의 f1 점수
+best_model = grid.best_estimator_ # 최적의 추정기/모델 
+Y_pred = best_model.predict( X_test ) # 최적의 추정기로 예측
+print( classification_report( Y_test , Y_pred , zero_division=0) ) # 파이프라인으로 최적의 모델 탐색하여 보고서 출력
