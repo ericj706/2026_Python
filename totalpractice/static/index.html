@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>서울 바이크 · 대여량 예측</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/axios@1.13.2/dist/axios.min.js"></script>
+  <script defer src="/static/script.js"></script>
+</head>
+<body>
+  <header class="topbar"><a href="/" class="brand"><span class="brand-icon">↗</span> SEOUL BIKE <span class="brand-sub">수요 예측</span></a><a href="/docs" target="_blank" rel="noopener">API 문서 ↗</a></header>
+  <main>
+    <section class="intro"><span class="eyebrow">SEOUL BIKE DEMAND FORECAST</span><h1>날씨가 바뀌면,<br>자전거 수요는 얼마나 달라질까요?</h1><p>날짜와 날씨를 입력하고 서울의 하루 총 자전거 대여량을 예측해 보세요.</p></section>
+    <div class="layout">
+      <form id="predict-form" class="panel">
+        <div class="section-heading"><div><span class="step">01 / CONDITIONS</span><h2>예측 조건 설정</h2></div><button type="button" id="sample" class="text-button">예시 채우기 ↗</button></div>
+        <fieldset><legend>언제 이용하나요?</legend><div class="fields two">
+          <label>날짜<input type="date" name="date" required><small>월 · 요일 · 계절을 자동으로 계산해요.</small></label>
+        </div><div id="date-summary" class="date-summary">날짜를 선택해 주세요.</div></fieldset>
+        <fieldset><legend>하루의 날씨를 입력해 주세요</legend><div class="fields two">
+          <label>일평균 기온 <span>°C</span><input name="temperature" type="number" step="any" placeholder="예: 25" required></label>
+          <label>일평균 습도 <span>%</span><input name="humidity" type="number" min="0" max="100" step="any" placeholder="예: 60" required></label>
+          <label>일평균 풍속 <span>m/s</span><input name="wind_speed" type="number" min="0" step="any" placeholder="예: 2.1" required></label>
+          <label>일평균 이슬점 온도 <span>°C</span><input name="dew_point" type="number" step="any" placeholder="예: 16.7" required></label>
+          <label>일평균 가시거리 <span>10m 단위</span><input name="visibility" type="number" min="0" step="any" placeholder="예: 2000" required><small>2000 입력 = 20km</small></label>
+          <label>일합계 일사량 <span>MJ/m²</span><input name="solar_radiation" type="number" min="0" step="any" placeholder="예: 15" required><small>하루 동안의 시간별 일사량 합계예요.</small></label>
+          <label>일합계 강수량 <span>mm</span><input name="rainfall" type="number" min="0" step="any" placeholder="예: 0" required></label>
+          <label>일최대 적설량 <span>cm</span><input name="snowfall" type="number" min="0" step="any" placeholder="예: 0" required></label>
+        </div></fieldset>
+        <p id="error" class="error" role="alert" hidden></p>
+        <button id="submit" class="primary" type="submit">대여량 예측하기 <span>→</span></button>
+        <p class="form-note">24시간 정상 운영일의 총 수요를 예측합니다. 날씨는 직접 입력해 주세요.</p>
+      </form>
+      <aside class="result-column">
+        <section class="result-card" aria-live="polite" aria-busy="false" id="result-card"><span class="step">02 / PREDICTION</span><h2>예상 자전거 대여량</h2><div class="bike-art" aria-hidden="true"><svg viewBox="0 0 300 140" fill="none"><circle cx="65" cy="95" r="35"/><circle cx="235" cy="95" r="35"/><path d="m65 95 47-68 46 68H65l32-48h105l33 48M158 95l44-71h-25M95 22h37"/></svg></div><div class="prediction"><strong id="prediction">—</strong><span>대 / 일</span></div><p id="result-description">조건을 입력하면 예측 결과가 여기에 표시됩니다.</p><div class="metric"><div><span>검증 데이터 R²</span><strong id="r2">—</strong></div><p>모델이 검증 데이터의 대여량 변동을 설명하는 정도입니다. 이번 예측의 확률이나 정확도를 뜻하지 않습니다.</p></div><div class="metric"><div><span>평균 절대 오차 (MAE)</span><strong id="mae">—</strong></div><p id="mae-description">일별 총 대여량의 평균 절대 오차입니다. 개별 예측의 오차 범위를 보장하지 않습니다.</p></div><p id="negative-note" hidden>모델의 원본 예측이 음수여서 화면에는 0대로 표시했습니다.</p></section>
+        <section class="info-card"><span class="eyebrow">HOW IT WORKS</span><h3>입력부터 예측까지</h3><ol><li>날짜와 날씨 조건 입력</li><li>저장된 전처리 · Ridge 모델로 예측</li><li>예상 대여량과 검증 성능 확인</li></ol><p>과거 서울 자전거 데이터를 학습한 결과로, 실제 대여량과 차이가 있을 수 있습니다.</p></section>
+      </aside>
+    </div>
+    <footer>SEOUL BIKE · 머신러닝 기반 대여 수요 예측 프로젝트</footer>
+  </main>
+</body>
+</html>

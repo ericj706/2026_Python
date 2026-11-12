@@ -11,7 +11,7 @@ Y = df['species']
 # 4) 분리
 from sklearn.model_selection import train_test_split
 X_train,X_test,Y_train,Y_test = train_test_split(X,Y,test_size=0.2,random_state=42,stratify=Y)
-# 5) 복합형 파이프라인 위한 수치형 과 범주형 특성 분리
+# 5) 복합형 파이프라인 위한 수치형과 범주형 특성 분리
 num_features = ['bill_length_mm', 'bill_depth_mm', 'flipper_length_mm', 'body_mass_g']
 cat_features = ['island', 'sex']
 # 6) 복합 특성 
