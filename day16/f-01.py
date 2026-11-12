@@ -8,7 +8,7 @@ app = FastAPI()
 # 3) uvicorn 서버 실행 함수 만들기 , 파이썬 main함수 만들기
 # 자바 public static void main 함수 역할 : 메인 스레드 내장 포함하여 프로세스 실행 최초 실행 함수
 # 파이썬 if __name__ == "__main__" : 해당 py 실행되면 먼저 진입되는 구역
-if __name__ == "__main__" :
+if __name__ == "__main__":
    # uvicorn.run("현재파일명:app", host="현재IP",port=서버포트,reload=자동재실행여부)
     uvicorn.run("현재파일명:app", host="127.0.0.1",port=8000,reload=True)
 # 4) 서버 실행 방법 : 현재 uvicorn.run 존재하는 파일에서 py 실행
