@@ -19,6 +19,7 @@ X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, random_
 # 1. optuna 설치 : $env:PYYAML_FORCE_LIBYAML = "0" , pip install optuna shap
 # 2) optuna 로그 숨기기/경고만 출력
 import optuna
+# Install LightGBM in the Python environment selected by your editor:
 from lightgbm import LGBMRegressor,early_stopping
 import numpy as np
 
