@@ -36,10 +36,29 @@ plt.scatter(X_test_scaled[ : ,4], X_test_scaled[ : ,1] , c="red", marker='*')
 plt.show()
 
 # 4) 최적의 K(군집/그룹) 수 찾기 vs 지도학습 (F1 분류 / R2 회귀)
+from sklearn.metrics import silhouette_score
 sse_list = []
+sil_list = []
 for k in range(2,20):
     k_temp = KMeans(n_clusters=k,random_state=42)   # K반복마다 학습 모델 생성
     preds = k_temp.fit_predict(X_train_scaled)      # 모델 학습/추록 동시에, fit + predict
     sse_list.append(k_temp.inertia_)    # 군집 결과에 각 샘플과 중심점 거리 제곱의 합 저장
+    sil_list.append(silhouette_score(X_train , preds)) # 실루엣 점수를 저장
 plt.plot(range(2,20), sse_list, marker='o')
 plt.show()
+plt.plot(range(2,20), sil_list, marker='o')
+plt.show()
+# sse : 엘보우 지점 (기울기가 완만하게 꺾이는 변곡점) 5~10
+# 실루엣 : 높은 값일수록 이상적
+# 두 차트 해석하여 최적의 K해석 , 
+# 최적 K 군집하기
+best_model = KMeans(n_clusters=5)
+pred = best_model.fit_predict(X_train_scaled)
+print(pred[:10])
+
+# 5) HDBSCAN # k-means 다르게 밀도 기반으로 군집 , 이상치(-1) 자동 탐지
+from sklearn.cluster import HDBSCAN
+# HDBSCAN(min_cluster= 군집하기 위한 최소 데이터수, min_samples= 군집판별할때 계산되는 이웃 수)
+model = HDBSCAN(min_cluster_size=15, min_samples=5)
+pred = model.fit_predict( X_train_scaled )
+print(pred) # 그룹 / 그룹 4개 , 이상치 -1개
