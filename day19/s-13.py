@@ -1,6 +1,5 @@
-# 지도학습 : X특선(독립)과 Y타깃(종속) 모델에 학습하여 예측
-# 비지도학습 : X특성(독립)
-
+# 지도학습 : X특성(독립) 과 Y타깃(종속) 모델에 학습 하여 예측 , 회귀 r2, 분류 f1-score 평가지도
+# 비지도학습 : X특성(독립) 모델 이용하여 거리/밀도 군집/클러스터/그룹 , 최적K( SSE, 실루엣 )
 
 import pandas as pd
 url = "https://raw.githubusercontent.com/arunk13/MSDA-Assignments/master/IS607Fall2015/Assignment3/student-mat.csv"
@@ -86,20 +85,27 @@ X_train_pca = pca.fit_transform(X_train_scaled)
 print(X_train_pca)        # 행마다의 가중치
 print(pca.components_.T)  # 주 특성별 가중치
 
-pca_hdb = HDBSCAN(min_cluster_size = 30, min_sample = 5)
+pca_hdb = HDBSCAN(min_cluster_size = 30, min_samples = 5)
 pca_pred = pca_hdb.fit_predict(X_train_pca)  # 5차원에서 2차원으로 축소한 PCA 학습
 X_train['PC1'] = X_train_pca[ : , 0]
 X_train['PC2'] = X_train_pca[ : , 1]
 X_train['PCA_cluster'] = pca_pred
-print(X_train['PC1','PC2','PCA_cluster'].head(5))
+print(X_train[ ['PC1','PC2','PCA_cluster'] ].head(10))
 
-# 7) 이상치 제외한 G3 평균 계산
-
-
+# 7) 이상치 제외한 G3 평균 계산 
+normal_clusters = X_train[ X_train['PCA_cluster'] != -1 ] # 이상치 제외
+# pd.groupby('성별')['국어점수'].mean(): 성별/열 그룹/끼리 국어점수/특정 열에 평균/집계   
+cluster_means = normal_clusters.groupby('PCA_cluster')['G3'].mean()
+sorted_cluster = cluster_means.sort_values( ascending = True ) # True 오름차순 False 내림차순
+print( sorted_cluster )
+# PCA_cluster     클러스터별 G3 평균점수 == PC1 가중치 : 예측 비교 
+# 1     9.873239
+# 0    12.500000
+# 2    13.641509
 
 # 8) 라벨링
 labels = { }
-for id , cluster_id in enumerate( sorted_cluster.index , start=1) :
+for idx , cluster_id in enumerate( sorted_cluster.index , start=1) :
     labels[cluster_id] = f'Level{idx}'
 labels[-1] = 'Outlier' # 이상치는 리스트 가장 뒤에
 # {1: 'Level1', 0: 'Level2', 2:'Level3', -1:'Outlier'}
