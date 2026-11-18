@@ -62,3 +62,57 @@ from sklearn.cluster import HDBSCAN
 model = HDBSCAN(min_cluster_size=15, min_samples=5)
 pred = model.fit_predict( X_train_scaled )
 print(pred) # 그룹 / 그룹 4개 , 이상치 -1개
+X_train['hdb_cluster'] = pred # 군집 결측치
+print(X_train['hdb_cluster'].value_counts())
+# 0    194  ,  1    85  ,  2    56  ,  -1    32  ,  3    20
+# min_cluster_size, min_samples  15,5 -> 30,2
+# 1    184  ,  2    89  ,  0    81  ,  -1    33
+# 시각화 : dltkdcl (*) , 군집데이터(o)
+noise_mask = (X_train['hdb_cluster'] == 1)
+plt.scatter(X_train.loc[~noise_mask, 'G3'] ,
+            X_train.loc[~noise_mask,'absences'] ,
+            c=X_train.loc[~noise_mask,'hdb_cluster'])
+plt.scatter(X_train.loc[noise_mask, 'G3'] ,
+            X_train.loc[noise_mask,'absences'] ,
+            c='red', marker='*' )
+plt.show()
+
+# 6) PCA(주성분분석)
+from sklearn.decomposition import PCA
+# PCA ( n_components=차원수 )
+pca = PCA(n_components=2)   # 시각화(2D) 하기위한 2차원 축소
+# 딥러닝( 이미지 3차원 -> RGB -> 흑백 -> 1차원 )
+X_train_pca = pca.fit_transform(X_train_scaled)
+print(X_train_pca)        # 행마다의 가중치
+print(pca.components_.T)  # 주 특성별 가중치
+
+pca_hdb = HDBSCAN(min_cluster_size = 30, min_sample = 5)
+pca_pred = pca_hdb.fit_predict(X_train_pca)  # 5차원에서 2차원으로 축소한 PCA 학습
+X_train['PC1'] = X_train_pca[ : , 0]
+X_train['PC2'] = X_train_pca[ : , 1]
+X_train['PCA_cluster'] = pca_pred
+print(X_train['PC1','PC2','PCA_cluster'].head(5))
+
+# 7) 이상치 제외한 G3 평균 계산
+
+
+
+# 8) 라벨링
+labels = { }
+for id , cluster_id in enumerate( sorted_cluster.index , start=1) :
+    labels[cluster_id] = f'Level{idx}'
+labels[-1] = 'Outlier' # 이상치는 리스트 가장 뒤에
+# {1: 'Level1', 0: 'Level2', 2:'Level3', -1:'Outlier'}
+X_train['pca_cluster_label'] = X_train['PCA_cluster'].replace(labels)
+print(X_train) # 군집화한 결과 가지고 추후에 지도학습
+# 지도학습에서 성능 향상 하기 위한 방법: 0)전처리 1)하이퍼파라미터 설정 2)파생변수
+
+# 9) 시각화
+for lbl in list(labels.values() ):
+    sub = X_train[ X_train['pca_cluster_label'] == lbl]
+    if lbl == 'Outlier' :
+        plt.scatter(sub['PC1'], sub['PC2'], c='red', marker='*')
+    else :
+        plt.scatter( sub['PC1'], sub['PC2'], marker='o', label=lbl)
+plt.legend()
+plt.show()
